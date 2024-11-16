@@ -1,11 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import FilterBar from '../components/FilterBar';
 import PriceDisplay from '../components/PriceDisplay';
-// import Chart1 from '../components/Chart1';
-// import Chart2 from '../components/Chart2';
-import connectToDatabase from '../lib/mongodb';
+import PieChart from '../components/PieChartSeason';
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -39,10 +36,8 @@ const Dashboard = () => {
   return (
     <div>
       <h1>Dashboard</h1>
-      {/* <FilterBar filters={{}} setFilters={() => {}} /> Si tu n'as plus de filtre, tu peux passer un objet vide */}
       <PriceDisplay data={data} />
-      {/* <Chart1 data={data} />
-      <Chart2 data={data} /> */}
+      <PieChart />
     </div>
   );
 };
