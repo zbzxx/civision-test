@@ -10,11 +10,13 @@ import {
     Legend,
 } from 'chart.js';
 
+// Enregistrer les composants nécessaires pour Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 const SeasonLevelChart: React.FC<{ filters: any }> = ({ filters }) => {
     const [chartData, setChartData] = useState<any>(null);
 
+    // useEffect pour récupérer les données et mettre à jour l'état chartData
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -28,28 +30,31 @@ const SeasonLevelChart: React.FC<{ filters: any }> = ({ filters }) => {
 
                 // Préparer les données pour le graphique
                 const seasons = Object.keys(data); // Saisons comme labels
-                const levels = ['pro', 'moyen', 'novice'];
+                const levels = ['pro', 'moyen', 'novice']; // Niveaux à afficher
 
+                // Préparer les datasets pour chaque niveau
                 const datasets = levels.map((level, index) => ({
-                    label: `Niveau ${level}`,
-                    data: seasons.map((season) => data[season]?.[level] || 0), // Données par saison
-                    backgroundColor: `rgba(${index * 60 + 100}, ${index * 40 + 80}, 255, 0.7)`,
-                    borderColor: `rgba(${index * 60 + 100}, ${index * 40 + 80}, 255, 1)`,
-                    borderWidth: 1,
+                    label: `Niveau ${level}`, // Libellé de la série
+                    data: seasons.map((season) => data[season]?.[level] || 0), // Données de chaque saison pour ce niveau
+                    backgroundColor: `rgba(${index * 60 + 100}, ${index * 40 + 80}, 255, 0.7)`, // Couleur de la barre
+                    borderColor: `rgba(${index * 60 + 100}, ${index * 40 + 80}, 255, 1)`, // Bordure de la barre
+                    borderWidth: 1, // Largeur de la bordure
                 }));
 
+                // Mettre à jour l'état avec les données du graphique
                 setChartData({
-                    labels: seasons,
-                    datasets,
+                    labels: seasons, // Labels des saisons
+                    datasets, // Données pour chaque niveau
                 });
             } catch (error) {
                 console.error('Erreur lors de la récupération des données:', error);
             }
         };
 
-        fetchData();
-    }, [filters]); // Recharger lorsque les filtres changent
+        fetchData(); // Appeler la fonction pour récupérer les données lorsque les filtres changent
+    }, [filters]); // Recharger les données lorsque les filtres changent
 
+    // Affichage d'un message de chargement si les données ne sont pas encore disponibles
     if (!chartData) return <p>Chargement...</p>;
 
     return (
@@ -58,40 +63,40 @@ const SeasonLevelChart: React.FC<{ filters: any }> = ({ filters }) => {
                 Prix Moyen par Niveau et par Saison
             </h2>
             <Bar
-                data={chartData}
+                data={chartData} // Données à afficher dans le graphique
                 options={{
-                    responsive: true,
+                    responsive: true, // Le graphique s'ajuste selon la taille du conteneur
                     plugins: {
                         legend: {
-                            position: 'top' as const,
+                            position: 'top' as const, // Position de la légende en haut
                             labels: {
-                                color: '#4B5563',
+                                color: '#4B5563', // Couleur des labels de la légende
                             },
                         },
                         title: {
-                            display: true,
-                            text: 'Prix moyen des niveaux selon les saisons',
-                            color: '#1F2937',
+                            display: true, // Afficher le titre du graphique
+                            text: 'Prix moyen des niveaux selon les saisons', // Titre du graphique
+                            color: '#1F2937', // Couleur du titre
                             font: {
-                                size: 16,
+                                size: 16, // Taille du titre
                             },
                         },
                     },
                     scales: {
                         x: {
                             ticks: {
-                                color: '#4B5563',
+                                color: '#4B5563', // Couleur des ticks sur l'axe X
                             },
                             grid: {
-                                color: '#E5E7EB',
+                                color: '#E5E7EB', // Couleur de la grille sur l'axe X
                             },
                         },
                         y: {
                             ticks: {
-                                color: '#4B5563',
+                                color: '#4B5563', // Couleur des ticks sur l'axe Y
                             },
                             grid: {
-                                color: '#E5E7EB',
+                                color: '#E5E7EB', // Couleur de la grille sur l'axe Y
                             },
                         },
                     },

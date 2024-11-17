@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 
 const FilterBar: React.FC<{ onFilterChange: (filters: any) => void }> = ({ onFilterChange }) => {
-    const [season, setSeason] = useState<string | null>(null);
-    const [level, setLevel] = useState<string | null>(null);
-    const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
+    // Déclaration des états pour les filtres : saison, niveau et plage de prix
+    const [season, setSeason] = useState<string | null>(null); // Filtre de saison
+    const [level, setLevel] = useState<string | null>(null); // Filtre de niveau
+    const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]); // Filtre de plage de prix
 
+    // useEffect pour appeler la fonction de callback dès que les filtres changent
     useEffect(() => {
+        // Appel de la fonction onFilterChange pour propager les nouveaux filtres
         onFilterChange({ season, level, priceRange });
-    }, [season, level, priceRange]);
+    }, [season, level, priceRange]); // L'effet se déclenche à chaque changement de filtre
 
     return (
         <div className="p-4 bg-gray-100 rounded-lg">
@@ -19,8 +22,8 @@ const FilterBar: React.FC<{ onFilterChange: (filters: any) => void }> = ({ onFil
                     <label className="block text-sm font-medium text-gray-700">Saison</label>
                     <select
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#4DA8A1] focus:ring-[#4DA8A1] sm:text-sm"
-                        value={season || ''}
-                        onChange={(e) => setSeason(e.target.value || null)}
+                        value={season || ''} // Si 'season' est null, on affiche une chaîne vide
+                        onChange={(e) => setSeason(e.target.value || null)} // Met à jour l'état 'season'
                     >
                         <option value="">Toutes les saisons</option>
                         <option value="été">Été</option>
@@ -35,8 +38,8 @@ const FilterBar: React.FC<{ onFilterChange: (filters: any) => void }> = ({ onFil
                     <label className="block text-sm font-medium text-gray-700">Niveau</label>
                     <select
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#4DA8A1] focus:ring-[#4DA8A1] sm:text-sm"
-                        value={level || ''}
-                        onChange={(e) => setLevel(e.target.value || null)}
+                        value={level || ''} // Si 'level' est null, on affiche une chaîne vide
+                        onChange={(e) => setLevel(e.target.value || null)} // Met à jour l'état 'level'
                     >
                         <option value="">Tous les niveaux</option>
                         <option value="pro">Pro</option>

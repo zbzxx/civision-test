@@ -1,9 +1,9 @@
 import React from 'react';
 
 interface ProjectInfoProps {
-  name: string;
-  githubProfile: string;
-  linkedinProfile: string;
+  name: string; // Nom de la personne réalisant le projet
+  githubProfile: string; // Lien vers le profil GitHub
+  linkedinProfile: string; // Lien vers le profil LinkedIn
 }
 
 const ProjectInfo: React.FC<ProjectInfoProps> = ({ name, githubProfile, linkedinProfile }) => {
