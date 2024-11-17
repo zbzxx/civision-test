@@ -12,13 +12,15 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const SeasonLevelChart: React.FC = () => {
+const SeasonLevelChart: React.FC<{ filters: any }> = ({ filters }) => {
     const [chartData, setChartData] = useState<any>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/data?action=averagePriceByLevelAndSeason');
+                // Construire l'URL avec les filtres
+                const queryParams = new URLSearchParams(filters).toString();
+                const response = await fetch(`/api/data?action=averagePriceByLevelAndSeason&${queryParams}`);
                 if (!response.ok) {
                     throw new Error(`Erreur API : ${response.status}`);
                 }
@@ -31,7 +33,7 @@ const SeasonLevelChart: React.FC = () => {
                 const datasets = levels.map((level, index) => ({
                     label: `Niveau ${level}`,
                     data: seasons.map((season) => data[season]?.[level] || 0), // Données par saison
-                    backgroundColor: `rgba(${index * 60 + 100}, ${index * 40 + 80}, 255, 0.6)`,
+                    backgroundColor: `rgba(${index * 60 + 100}, ${index * 40 + 80}, 255, 0.7)`,
                     borderColor: `rgba(${index * 60 + 100}, ${index * 40 + 80}, 255, 1)`,
                     borderWidth: 1,
                 }));
@@ -46,12 +48,12 @@ const SeasonLevelChart: React.FC = () => {
         };
 
         fetchData();
-    }, []);
+    }, [filters]); // Recharger lorsque les filtres changent
 
     if (!chartData) return <p>Chargement...</p>;
 
     return (
-        <div className="w-full max-w-4xl mx-auto p-6 bg-white shadow-md rounded-lg">
+        <div className="w-full max-w-4xl mx-auto p-6 shadow-md rounded-lg">
             <h2 className="text-xl font-bold text-center text-gray-800 mb-4">
                 Prix Moyen par Niveau et par Saison
             </h2>

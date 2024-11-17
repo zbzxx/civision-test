@@ -6,21 +6,20 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels'; // Import the datalabels plugin
 
 // Enregistrer les composants nécessaires pour Chart.js
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 const PieChart: React.FC = () => {
   const [chartData, setChartData] = useState<any>(null);
 
   useEffect(() => {
-    // Récupérer les données depuis l'API
     const fetchData = async () => {
       try {
         const response = await fetch('/api/data?action=countBySeason');
         const data = await response.json();
 
-        // Préparer les données pour le graphique
         setChartData({
           labels: ['Été', 'Hiver', 'Printemps', 'Automne'],
           datasets: [
@@ -28,10 +27,10 @@ const PieChart: React.FC = () => {
               label: 'Nombre d\'éléments',
               data: [data.été, data.hiver, data.printemps, data.automne],
               backgroundColor: [
-                'rgba(255, 99, 132, 0.6)', // Rouge
-                'rgba(54, 162, 235, 0.6)', // Bleu
-                'rgba(75, 192, 192, 0.6)', // Vert
-                'rgba(255, 206, 86, 0.6)', // Jaune
+                'rgba(255, 99, 132, 0.6)',
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(75, 192, 192, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
               ],
               borderColor: [
                 'rgba(255, 99, 132, 1)',
@@ -51,10 +50,45 @@ const PieChart: React.FC = () => {
     fetchData();
   }, []);
 
-  // Affiche un message si les données ne sont pas encore chargées
   if (!chartData) return <p>Chargement...</p>;
 
-  return <Pie data={chartData} />;
+  return (
+    <div className="flex justify-center items-center w-full h-full">
+      <div className="w-96 h-96"> {/* Taille du conteneur du graphique, ajustée pour être plus grande */}
+        <Pie
+          data={chartData}
+          options={{
+            responsive: true,
+            plugins: {
+              legend: {
+                position: 'right' as const, // Position de la légende à droite
+                labels: {
+                  color: '#4B5563',
+                },
+              },
+              title: {
+                display: true,
+                text: 'Répartition des éléments par saison',
+                color: '#1F2937',
+                font: {
+                  size: 16,
+                },
+              },
+              datalabels: { // Options du plugin de labels de données
+                color: '#fff',
+                font: {
+                  weight: 'bold',
+                  size: 14,
+                },
+                formatter: (value: any) => value, // Affiche les valeurs des tranches
+              },
+            },
+            maintainAspectRatio: false, // Permet de contrôler la taille indépendamment du ratio
+          }}
+        />
+      </div>
+    </div>
+  );
 };
 
 export default PieChart;
