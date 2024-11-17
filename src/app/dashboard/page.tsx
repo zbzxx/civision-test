@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import PriceDisplay from '../components/PriceDisplay';
 import PieChart from '../components/PieChartSeason';
+import SeasonLevelChart from '../components/SeasonLevelChart';
 
 const Dashboard = () => {
   const [data, setData] = useState([]);
@@ -38,6 +39,7 @@ const Dashboard = () => {
       <h1>Dashboard</h1>
       <PriceDisplay data={data} />
       <PieChart />
+      <SeasonLevelChart />
     </div>
   );
 };
